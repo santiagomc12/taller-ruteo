@@ -1,0 +1,127 @@
+<div class="mt-1">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['/inicio']">Inicio</a></li>
+      <li class="breadcrumb-item">
+        <a href="javascript: void(0)">Universidades</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Crear</li>
+    </ol>
+  </nav>
+</div>
+
+<div class="row justify-content-md-center">
+  <div class="col-md-10">
+    <div class="card">
+      <h5 class="card-header">Creación de universidades</h5>
+      <div class="card-body">
+        <form
+          #frmCrear="ngForm"
+          (ngSubmit)="frmCrear.form.valid && enviarInfo(frmCrear)"
+          novalidate
+        >
+          <div class="form-group">
+            <label for="nomUni">Nombre universidad</label>
+            <input
+              class="form-control"
+              type="text"
+              id="nomUni"
+              name="nomUni"
+              [(ngModel)]="objUniversidad.nombreUniversidad"
+              #nomUni="ngModel"
+              [ngClass]="{ 'is-invalid': frmCrear.submitted && nomUni.invalid }"
+              required
+              minlength="5"
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="frmCrear.submitted && nomUni.invalid"
+            >
+              <span *ngIf="nomUni?.errors?.required"
+                >Nombre de la universidad requerido</span
+              >
+              <span *ngIf="nomUni?.errors?.minLenght">
+                Debe tener minimo 5 caracteres
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="codUni">Codigo de universidad</label>
+            <input
+              class="form-control"
+              type="text"
+              id="codUni"
+              name="codUni"
+              [(ngModel)]="objUniversidad.codigoUniversidad"
+              #codUni="ngModel"
+              pattern="\d*"
+              [ngClass]="{ 'is-invalid': frmCrear.submitted && codUni.invalid }"
+              required
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="frmCrear.submitted && codUni.invalid"
+            >
+              <span *ngIf="codUni?.errors?.required">
+                Codigo de universidad requerido
+              </span>
+              <span *ngIf="codUni.errors?.pattern">
+                Solo se admiten numeros
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="logoU"> Foto del logo </label>
+            <div class="input-group">
+              <input
+                class="form-control form-control-sm"
+                type="text"
+                id="logoU"
+                name="logoU"
+                [(ngModel)]="objUniversidad.nombreLogo"
+                #logoU="ngModel"
+                [ngClass]="{
+                  'is-invalid': frmCrear.submitted && logoU.invalid
+                }"
+                required
+                accept="image/x-png,image/jpge, image/gif"
+              />
+              <button
+                type="button"
+                class="btn btn-info btn-sm"
+                (click)="fileInput.click()"
+              >
+                <span>+</span>
+                <input
+                  #fileInput
+                  type="file"
+                  (change)="seleccionarFoto($event)"
+                  style="display: none"
+                />
+              </button>
+            </div>
+            <div
+              class="invalid-feedback"
+              *ngIf="frmCrear.submitted && logoU.invalid"
+            >
+              <span *ngIf="logoU?.errors?.required"
+                >La foto es obligatoria</span
+              >
+            </div>
+          </div>
+
+          <div class="text-left">
+            <img
+              class="img-thumbnail"
+              style="width: 250px; height: 100%"
+              [src]="objUniversidad.logoBase64"
+              alt="No encontre la foto"
+              onerror="this.src='../assets/img/sinfoto.png'"
+            />
+          </div>
+          <button class="btn btn-dark" type="submit"> Crear universidad</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
